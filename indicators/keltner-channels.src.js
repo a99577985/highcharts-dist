@@ -1,5 +1,5 @@
 /**
- * @license Highstock JS v8.1.0 (2020-05-05)
+ * @license Highstock JS v8.1.0 (2020-05-12)
  *
  * Indicator series type for Highstock
  *
@@ -38,9 +38,7 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var defined = U.defined,
-            error = U.error,
-            merge = U.merge;
+        var defined = U.defined, error = U.error, merge = U.merge;
         var SMA = H.seriesTypes.sma;
         /**
          * Mixin useful for all indicators that have more than one line.
@@ -53,50 +51,50 @@
          * @mixin multipleLinesMixin
          */
         var multipleLinesMixin = {
-                /* eslint-disable valid-jsdoc */
-                /**
-                 * Lines ids. Required to plot appropriate amount of lines.
-                 * Notice that pointArrayMap should have more elements than
-                 * linesApiNames, because it contains main line and additional lines ids.
-                 * Also it should be consistent with amount of lines calculated in
-                 * getValues method from your implementation.
-                 *
-                 * @private
-                 * @name multipleLinesMixin.pointArrayMap
-                 * @type {Array<string>}
-                 */
-                pointArrayMap: ['top', 'bottom'],
-                /**
-                 * Main line id.
-                 *
-                 * @private
-                 * @name multipleLinesMixin.pointValKey
-                 * @type {string}
-                 */
-                pointValKey: 'top',
-                /**
-                 * Additional lines DOCS names. Elements of linesApiNames array should
-                 * be consistent with DOCS line names defined in your implementation.
-                 * Notice that linesApiNames should have decreased amount of elements
-                 * relative to pointArrayMap (without pointValKey).
-                 *
-                 * @private
-                 * @name multipleLinesMixin.linesApiNames
-                 * @type {Array<string>}
-                 */
-                linesApiNames: ['bottomLine'],
-                /**
-                 * Create translatedLines Collection based on pointArrayMap.
-                 *
-                 * @private
-                 * @function multipleLinesMixin.getTranslatedLinesNames
-                 * @param {string} [excludedValue]
-                 *        Main line id
-                 * @return {Array<string>}
-                 *         Returns translated lines names without excluded value.
-                 */
-                getTranslatedLinesNames: function (excludedValue) {
-                    var translatedLines = [];
+            /* eslint-disable valid-jsdoc */
+            /**
+             * Lines ids. Required to plot appropriate amount of lines.
+             * Notice that pointArrayMap should have more elements than
+             * linesApiNames, because it contains main line and additional lines ids.
+             * Also it should be consistent with amount of lines calculated in
+             * getValues method from your implementation.
+             *
+             * @private
+             * @name multipleLinesMixin.pointArrayMap
+             * @type {Array<string>}
+             */
+            pointArrayMap: ['top', 'bottom'],
+            /**
+             * Main line id.
+             *
+             * @private
+             * @name multipleLinesMixin.pointValKey
+             * @type {string}
+             */
+            pointValKey: 'top',
+            /**
+             * Additional lines DOCS names. Elements of linesApiNames array should
+             * be consistent with DOCS line names defined in your implementation.
+             * Notice that linesApiNames should have decreased amount of elements
+             * relative to pointArrayMap (without pointValKey).
+             *
+             * @private
+             * @name multipleLinesMixin.linesApiNames
+             * @type {Array<string>}
+             */
+            linesApiNames: ['bottomLine'],
+            /**
+             * Create translatedLines Collection based on pointArrayMap.
+             *
+             * @private
+             * @function multipleLinesMixin.getTranslatedLinesNames
+             * @param {string} [excludedValue]
+             *        Main line id
+             * @return {Array<string>}
+             *         Returns translated lines names without excluded value.
+             */
+            getTranslatedLinesNames: function (excludedValue) {
+                var translatedLines = [];
                 (this.pointArrayMap || []).forEach(function (propertyName) {
                     if (propertyName !== excludedValue) {
                         translatedLines.push('plot' +
@@ -129,10 +127,7 @@
              * @return {void}
              */
             translate: function () {
-                var indicator = this,
-                    pointArrayMap = indicator.pointArrayMap,
-                    LinesNames = [],
-                    value;
+                var indicator = this, pointArrayMap = indicator.pointArrayMap, LinesNames = [], value;
                 LinesNames = indicator.getTranslatedLinesNames();
                 SMA.prototype.translate.apply(indicator, arguments);
                 indicator.points.forEach(function (point) {
@@ -152,22 +147,13 @@
              * @return {void}
              */
             drawGraph: function () {
-                var indicator = this,
-                    pointValKey = indicator.pointValKey,
-                    linesApiNames = indicator.linesApiNames,
-                    mainLinePoints = indicator.points,
-                    pointsLength = mainLinePoints.length,
-                    mainLineOptions = indicator.options,
-                    mainLinePath = indicator.graph,
-                    gappedExtend = {
-                        options: {
-                            gapSize: mainLineOptions.gapSize
-                        }
-                    }, 
-                    // additional lines point place holders:
-                    secondaryLines = [],
-                    secondaryLinesNames = indicator.getTranslatedLinesNames(pointValKey),
-                    point;
+                var indicator = this, pointValKey = indicator.pointValKey, linesApiNames = indicator.linesApiNames, mainLinePoints = indicator.points, pointsLength = mainLinePoints.length, mainLineOptions = indicator.options, mainLinePath = indicator.graph, gappedExtend = {
+                    options: {
+                        gapSize: mainLineOptions.gapSize
+                    }
+                }, 
+                // additional lines point place holders:
+                secondaryLines = [], secondaryLinesNames = indicator.getTranslatedLinesNames(pointValKey), point;
                 // Generate points for additional lines:
                 secondaryLinesNames.forEach(function (plotLine, index) {
                     // create additional lines point place holders
@@ -225,12 +211,8 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var correctFloat = U.correctFloat,
-            merge = U.merge,
-            seriesType = U.seriesType;
-        var SMA = H.seriesTypes.sma,
-            EMA = H.seriesTypes.ema,
-            ATR = H.seriesTypes.atr;
+        var correctFloat = U.correctFloat, merge = U.merge, seriesType = U.seriesType;
+        var SMA = H.seriesTypes.sma, EMA = H.seriesTypes.ema, ATR = H.seriesTypes.atr;
         /**
          * The Keltner Channels series type.
          *
@@ -342,32 +324,17 @@
                 }, this.options);
             },
             getValues: function (series, params) {
-                var period = params.period,
-                    periodATR = params.periodATR,
-                    multiplierATR = params.multiplierATR,
-                    index = params.index,
-                    yVal = series.yData,
-                    yValLen = yVal ? yVal.length : 0, 
-                    // Keltner Channels array structure:
-                    // 0-date, 1-top line, 2-middle line, 3-bottom line
-                    KC = [], 
-                    // middle line, top line and bottom lineI
-                    ML,
-                    TL,
-                    BL,
-                    date,
-                    seriesEMA = EMA.prototype.getValues(series, {
-                        period: period,
-                        index: index
-                    }),
-                    seriesATR = ATR.prototype.getValues(series, {
-                        period: periodATR
-                    }),
-                    pointEMA,
-                    pointATR,
-                    xData = [],
-                    yData = [],
-                    i;
+                var period = params.period, periodATR = params.periodATR, multiplierATR = params.multiplierATR, index = params.index, yVal = series.yData, yValLen = yVal ? yVal.length : 0, 
+                // Keltner Channels array structure:
+                // 0-date, 1-top line, 2-middle line, 3-bottom line
+                KC = [], 
+                // middle line, top line and bottom lineI
+                ML, TL, BL, date, seriesEMA = EMA.prototype.getValues(series, {
+                    period: period,
+                    index: index
+                }), seriesATR = ATR.prototype.getValues(series, {
+                    period: periodATR
+                }), pointEMA, pointATR, xData = [], yData = [], i;
                 if (yValLen < period) {
                     return;
                 }

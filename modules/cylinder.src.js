@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v8.1.0 (2020-05-05)
+ * @license Highcharts JS v8.1.0 (2020-05-12)
  *
  * Highcharts cylinder module
  *
@@ -43,20 +43,14 @@
          *
          * */
         var color = Color.parse;
-        var merge = U.merge,
-            pick = U.pick,
-            seriesType = U.seriesType;
-        var charts = H.charts,
-            deg2rad = H.deg2rad,
-            perspective = H.perspective, 
-            // Work on H.Renderer instead of H.SVGRenderer for VML support.
-            RendererProto = H.Renderer.prototype,
-            cuboidPath = RendererProto.cuboidPath,
-            cylinderMethods;
+        var merge = U.merge, pick = U.pick, seriesType = U.seriesType;
+        var charts = H.charts, deg2rad = H.deg2rad, perspective = H.perspective, 
+        // Work on H.Renderer instead of SVGRenderer for VML support.
+        RendererProto = H.Renderer.prototype, cuboidPath = RendererProto.cuboidPath, cylinderMethods;
         // Check if a path is simplified. The simplified path contains only lineTo
         // segments, whereas non-simplified contain curves.
         var isSimplified = function (path) {
-                return !path.some(function (seg) { return seg[0] === 'C'; });
+            return !path.some(function (seg) { return seg[0] === 'C'; });
         };
         /**
           * The cylinder series type.
@@ -188,18 +182,9 @@
         };
         // Generates paths and zIndexes.
         RendererProto.cylinderPath = function (shapeArgs) {
-            var renderer = this,
-                chart = charts[renderer.chartIndex], 
-                // decide zIndexes of parts based on cubiod logic, for consistency.
-                cuboidData = cuboidPath.call(renderer,
-                shapeArgs),
-                isTopFirst = !cuboidData.isTop,
-                isFronFirst = !cuboidData.isFront,
-                top = renderer.getCylinderEnd(chart,
-                shapeArgs),
-                bottom = renderer.getCylinderEnd(chart,
-                shapeArgs,
-                true);
+            var renderer = this, chart = charts[renderer.chartIndex], 
+            // decide zIndexes of parts based on cubiod logic, for consistency.
+            cuboidData = cuboidPath.call(renderer, shapeArgs), isTopFirst = !cuboidData.isTop, isFronFirst = !cuboidData.isFront, top = renderer.getCylinderEnd(chart, shapeArgs), bottom = renderer.getCylinderEnd(chart, shapeArgs, true);
             return {
                 front: renderer.getCylinderFront(top, bottom),
                 back: renderer.getCylinderBack(top, bottom),
@@ -226,9 +211,7 @@
                 }
             }
             else {
-                var move = bottomPath[0],
-                    curve1 = bottomPath[1],
-                    curve2 = bottomPath[2];
+                var move = bottomPath[0], curve1 = bottomPath[1], curve2 = bottomPath[2];
                 if (move[0] === 'M' && curve1[0] === 'C' && curve2[0] === 'C') {
                     path.push(['L', curve2[5], curve2[6]]);
                     path.push(['C', curve2[3], curve2[4], curve2[1], curve2[2], curve1[5], curve1[6]]);
@@ -242,8 +225,7 @@
         RendererProto.getCylinderBack = function (topPath, bottomPath) {
             var path = [];
             if (isSimplified(topPath)) {
-                var move = topPath[0],
-                    line2 = topPath[2];
+                var move = topPath[0], line2 = topPath[2];
                 if (move[0] === 'M' && line2[0] === 'L') {
                     path.push(['M', line2[1], line2[2]]);
                     path.push(topPath[3]);
@@ -266,9 +248,7 @@
                 }
             }
             else {
-                var curve2 = bottomPath[2],
-                    curve3 = bottomPath[3],
-                    curve4 = bottomPath[4];
+                var curve2 = bottomPath[2], curve3 = bottomPath[3], curve4 = bottomPath[4];
                 if (curve2[0] === 'C' && curve3[0] === 'C' && curve4[0] === 'C') {
                     path.push(['L', curve4[5], curve4[6]]);
                     path.push(['C', curve4[3], curve4[4], curve4[1], curve4[2], curve3[5], curve3[6]]);
@@ -282,80 +262,69 @@
         RendererProto.getCylinderEnd = function (chart, shapeArgs, isBottom) {
             // A half of the smaller one out of width or depth (optional, because
             // there's no depth for a funnel that reuses the code)
-            var depth = pick(shapeArgs.depth,
-                shapeArgs.width),
-                radius = Math.min(shapeArgs.width,
-                depth) / 2, 
-                // Approximated longest diameter
-                angleOffset = deg2rad * (chart.options.chart.options3d.beta - 90 +
-                    (shapeArgs.alphaCorrection || 0)), 
-                // Could be top or bottom of the cylinder
-                y = shapeArgs.y + (isBottom ? shapeArgs.height : 0), 
-                // Use cubic Bezier curve to draw a cricle in x,z (y is constant).
-                // More math. at spencermortensen.com/articles/bezier-circle/
-                c = 0.5519 * radius,
-                centerX = shapeArgs.width / 2 + shapeArgs.x,
-                centerZ = depth / 2 + shapeArgs.z, 
-                // points could be generated in a loop, but readability will plummet
-                points = [{
-                        x: 0,
-                        y: y,
-                        z: radius
-                    }, {
-                        x: c,
-                        y: y,
-                        z: radius
-                    }, {
-                        x: radius,
-                        y: y,
-                        z: c
-                    }, {
-                        x: radius,
-                        y: y,
-                        z: 0
-                    }, {
-                        x: radius,
-                        y: y,
-                        z: -c
-                    }, {
-                        x: c,
-                        y: y,
-                        z: -radius
-                    }, {
-                        x: 0,
-                        y: y,
-                        z: -radius
-                    }, {
-                        x: -c,
-                        y: y,
-                        z: -radius
-                    }, {
-                        x: -radius,
-                        y: y,
-                        z: -c
-                    }, {
-                        x: -radius,
-                        y: y,
-                        z: 0
-                    }, {
-                        x: -radius,
-                        y: y,
-                        z: c
-                    }, {
-                        x: -c,
-                        y: y,
-                        z: radius
-                    }, {
-                        x: 0,
-                        y: y,
-                        z: radius
-                    }],
-                cosTheta = Math.cos(angleOffset),
-                sinTheta = Math.sin(angleOffset),
-                perspectivePoints,
-                path,
-                x,
-                z;
+            var depth = pick(shapeArgs.depth, shapeArgs.width), radius = Math.min(shapeArgs.width, depth) / 2, 
+            // Approximated longest diameter
+            angleOffset = deg2rad * (chart.options.chart.options3d.beta - 90 +
+                (shapeArgs.alphaCorrection || 0)), 
+            // Could be top or bottom of the cylinder
+            y = shapeArgs.y + (isBottom ? shapeArgs.height : 0), 
+            // Use cubic Bezier curve to draw a cricle in x,z (y is constant).
+            // More math. at spencermortensen.com/articles/bezier-circle/
+            c = 0.5519 * radius, centerX = shapeArgs.width / 2 + shapeArgs.x, centerZ = depth / 2 + shapeArgs.z, 
+            // points could be generated in a loop, but readability will plummet
+            points = [{
+                    x: 0,
+                    y: y,
+                    z: radius
+                }, {
+                    x: c,
+                    y: y,
+                    z: radius
+                }, {
+                    x: radius,
+                    y: y,
+                    z: c
+                }, {
+                    x: radius,
+                    y: y,
+                    z: 0
+                }, {
+                    x: radius,
+                    y: y,
+                    z: -c
+                }, {
+                    x: c,
+                    y: y,
+                    z: -radius
+                }, {
+                    x: 0,
+                    y: y,
+                    z: -radius
+                }, {
+                    x: -c,
+                    y: y,
+                    z: -radius
+                }, {
+                    x: -radius,
+                    y: y,
+                    z: -c
+                }, {
+                    x: -radius,
+                    y: y,
+                    z: 0
+                }, {
+                    x: -radius,
+                    y: y,
+                    z: c
+                }, {
+                    x: -c,
+                    y: y,
+                    z: radius
+                }, {
+                    x: 0,
+                    y: y,
+                    z: radius
+                }], cosTheta = Math.cos(angleOffset), sinTheta = Math.sin(angleOffset), perspectivePoints, path, x, z;
             // rotete to match chart's beta and translate to the shape center
             points.forEach(function (point, i) {
                 x = point.x;
@@ -387,11 +356,7 @@
         // [ M, x, y, ...[C, cp1x, cp2y, cp2x, cp2y, epx, epy]*n_times ]
         // (cp - control point, ep - end point)
         RendererProto.getCurvedPath = function (points) {
-            var path = [['M',
-                points[0].x,
-                points[0].y]],
-                limit = points.length - 2,
-                i;
+            var path = [['M', points[0].x, points[0].y]], limit = points.length - 2, i;
             for (i = 1; i < limit; i += 3) {
                 path.push([
                     'C',

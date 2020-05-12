@@ -1,5 +1,5 @@
 /**
- * @license Highcharts Gantt JS v8.1.0 (2020-05-05)
+ * @license Highcharts Gantt JS v8.1.0 (2020-05-12)
  * @module highcharts/modules/treegrid
  * @requires highcharts
  *

@@ -1,5 +1,5 @@
 /*
- Highcharts JS v8.1.0 (2020-05-05)
+ Highcharts JS v8.1.0 (2020-05-12)
 
  Dependency wheel module
 

@@ -1,5 +1,5 @@
 /**
- * @license Highstock JS v8.1.0 (2020-05-05)
+ * @license Highstock JS v8.1.0 (2020-05-12)
  *
  * Drag-panes module
  *
@@ -43,16 +43,8 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var addEvent = U.addEvent,
-            clamp = U.clamp,
-            isNumber = U.isNumber,
-            merge = U.merge,
-            objectEach = U.objectEach,
-            relativeLength = U.relativeLength,
-            wrap = U.wrap;
-        var hasTouch = H.hasTouch,
-            Axis = H.Axis,
-            Pointer = H.Pointer;
+        var addEvent = U.addEvent, clamp = U.clamp, isNumber = U.isNumber, merge = U.merge, objectEach = U.objectEach, relativeLength = U.relativeLength, wrap = U.wrap;
+        var hasTouch = H.hasTouch, Axis = H.Axis, Pointer = H.Pointer;
         /* eslint-disable no-invalid-this, valid-jsdoc */
         /**
          * The AxisResizer class.
@@ -65,9 +57,9 @@
          *        Main axis for the AxisResizer.
          */
         var AxisResizer = /** @class */ (function () {
-                function AxisResizer(axis) {
-                    /* eslint-enable no-invalid-this */
-                    this.axis = void 0;
+            function AxisResizer(axis) {
+                /* eslint-enable no-invalid-this */
+                this.axis = void 0;
                 this.controlLine = void 0;
                 this.lastPos = void 0;
                 this.options = void 0;
@@ -96,18 +88,9 @@
              * @function Highcharts.AxisResizer#render
              */
             AxisResizer.prototype.render = function () {
-                var resizer = this,
-                    axis = resizer.axis,
-                    chart = axis.chart,
-                    options = resizer.options,
-                    x = options.x || 0,
-                    y = options.y, 
-                    // Normalize control line position according to the plot area
-                    pos = clamp(axis.top + axis.height + y,
-                    chart.plotTop,
-                    chart.plotTop + chart.plotHeight),
-                    attr = {},
-                    lineWidth;
+                var resizer = this, axis = resizer.axis, chart = axis.chart, options = resizer.options, x = options.x || 0, y = options.y, 
+                // Normalize control line position according to the plot area
+                pos = clamp(axis.top + axis.height + y, chart.plotTop, chart.plotTop + chart.plotHeight), attr = {}, lineWidth;
                 if (!chart.styledMode) {
                     attr = {
                         cursor: options.cursor,
@@ -140,13 +123,7 @@
              * @function Highcharts.AxisResizer#addMouseEvents
              */
             AxisResizer.prototype.addMouseEvents = function () {
-                var resizer = this,
-                    ctrlLineElem = resizer.controlLine.element,
-                    container = resizer.axis.chart.container,
-                    eventsToUnbind = [],
-                    mouseMoveHandler,
-                    mouseUpHandler,
-                    mouseDownHandler;
+                var resizer = this, ctrlLineElem = resizer.controlLine.element, container = resizer.axis.chart.container, eventsToUnbind = [], mouseMoveHandler, mouseUpHandler, mouseDownHandler;
                 // Create mouse events' handlers.
                 // Make them as separate functions to enable wrapping them:
                 resizer.mouseMoveHandler = mouseMoveHandler = function (e) {
@@ -227,22 +204,13 @@
              * @param {number} chartY
              */
             AxisResizer.prototype.updateAxes = function (chartY) {
-                var resizer = this,
-                    chart = resizer.axis.chart,
-                    axes = resizer.options.controlledAxis,
-                    nextAxes = axes.next.length === 0 ?
-                        [chart.yAxis.indexOf(resizer.axis) + 1] : axes.next, 
-                    // Main axis is included in the prev array by default
-                    prevAxes = [resizer.axis].concat(axes.prev), 
-                    // prev and next configs
-                    axesConfigs = [],
-                    stopDrag = false,
-                    plotTop = chart.plotTop,
-                    plotHeight = chart.plotHeight,
-                    plotBottom = plotTop + plotHeight,
-                    yDelta,
-                    calculatePercent = function (value) {
-                        return value * 100 / plotHeight + '%';
+                var resizer = this, chart = resizer.axis.chart, axes = resizer.options.controlledAxis, nextAxes = axes.next.length === 0 ?
+                    [chart.yAxis.indexOf(resizer.axis) + 1] : axes.next, 
+                // Main axis is included in the prev array by default
+                prevAxes = [resizer.axis].concat(axes.prev), 
+                // prev and next configs
+                axesConfigs = [], stopDrag = false, plotTop = chart.plotTop, plotHeight = chart.plotHeight, plotBottom = plotTop + plotHeight, yDelta, calculatePercent = function (value) {
+                    return value * 100 / plotHeight + '%';
                 }, normalize = function (val, min, max) {
                     return Math.round(clamp(val, min, max));
                 };
@@ -258,22 +226,15 @@
                     axesGroup.forEach(function (axisInfo, i) {
                         // Axes given as array index, axis object or axis id
                         var axis = isNumber(axisInfo) ?
-                                // If it's a number - it's an index
-                                chart.yAxis[axisInfo] :
-                                (
-                                // If it's first elem. in first group
-                                (!isNext && !i) ?
-                                    // then it's an Axis object
-                                    axisInfo :
-                                    // else it should be an id
-                                    chart.get(axisInfo)),
-                            axisOptions = axis && axis.options,
-                            optionsToUpdate = {},
-                            hDelta = 0,
-                            height,
-                            top,
-                            minLength,
-                            maxLength;
+                            // If it's a number - it's an index
+                            chart.yAxis[axisInfo] :
+                            (
+                            // If it's first elem. in first group
+                            (!isNext && !i) ?
+                                // then it's an Axis object
+                                axisInfo :
+                                // else it should be an id
+                                chart.get(axisInfo)), axisOptions = axis && axis.options, optionsToUpdate = {}, hDelta = 0, height, top, minLength, maxLength;
                         // Skip if axis is not found
                         // or it is navigator's yAxis (#7732)
                         if (!axisOptions ||
@@ -350,8 +311,7 @@
              * @function Highcharts.AxisResizer#destroy
              */
             AxisResizer.prototype.destroy = function () {
-                var resizer = this,
-                    axis = resizer.axis;
+                var resizer = this, axis = resizer.axis;
                 // Clear resizer in axis
                 delete axis.resizer;
                 // Clear control line events
@@ -524,10 +484,7 @@
         /* eslint-disable no-invalid-this */
         // Add new AxisResizer, update or remove it
         addEvent(Axis, 'afterRender', function () {
-            var axis = this,
-                resizer = axis.resizer,
-                resizerOptions = axis.options.resize,
-                enabled;
+            var axis = this, resizer = axis.resizer, resizerOptions = axis.options.resize, enabled;
             if (resizerOptions) {
                 enabled = resizerOptions.enabled !== false;
                 if (resizer) {

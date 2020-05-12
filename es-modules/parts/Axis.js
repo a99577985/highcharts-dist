@@ -144,7 +144,7 @@ var addEvent = U.addEvent, animObject = U.animObject, arrayMax = U.arrayMax, arr
  *
  * @param {Highcharts.Axis} this
  *
- * @return {Array<number>}
+ * @return {Highcharts.AxisTickPositionsArray}
  */
 /**
  * @interface Highcharts.AxisTickPositionsArray
@@ -1431,13 +1431,7 @@ var Axis = /** @class */ (function () {
         // set the translation factor used in translate function
         axis.setAxisTranslation(true);
         // hook for ordinal axes and radial axes
-        if (axis.beforeSetTickPositions) {
-            axis.beforeSetTickPositions();
-        }
-        // hook for extensions, used in Highstock ordinal axes
-        if (axis.ordinal) {
-            axis.tickInterval = axis.ordinal.postProcessTickInterval(axis.tickInterval);
-        }
+        fireEvent(this, 'initialAxisTranslation');
         // In column-like charts, don't cramp in more ticks than there are
         // points (#1943, #4184)
         if (axis.pointRange && !tickIntervalOption) {

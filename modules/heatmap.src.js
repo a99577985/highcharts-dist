@@ -1,5 +1,5 @@
 /**
- * @license Highmaps JS v8.1.0 (2020-05-05)
+ * @license Highmaps JS v8.1.0 (2020-05-12)
  *
  * (c) 2009-2019 Torstein Honsi
  *
@@ -52,8 +52,7 @@
              * @return {void}
              */
             setVisible: function (vis) {
-                var point = this,
-                    method = vis ? 'show' : 'hide';
+                var point = this, method = vis ? 'show' : 'hide';
                 point.visible = point.options.visible = Boolean(vis);
                 // Show and hide associated elements
                 ['graphic', 'dataLabel'].forEach(function (key) {
@@ -80,14 +79,9 @@
              * @return {void}
              */
             translateColors: function () {
-                var series = this,
-                    points = this.data.length ? this.data : this.points,
-                    nullColor = this.options.nullColor,
-                    colorAxis = this.colorAxis,
-                    colorKey = this.colorKey;
+                var series = this, points = this.data.length ? this.data : this.points, nullColor = this.options.nullColor, colorAxis = this.colorAxis, colorKey = this.colorKey;
                 points.forEach(function (point) {
-                    var value = point.getNestedProperty(colorKey),
-                        color;
+                    var value = point.getNestedProperty(colorKey), color;
                     color = point.options.color ||
                         (point.isNull || point.value === null ?
                             nullColor :
@@ -114,13 +108,10 @@
          *
          * */
         var __extends = (this && this.__extends) || (function () {
-                var extendStatics = function (d,
-            b) {
-                    extendStatics = Object.setPrototypeOf ||
-                        ({ __proto__: [] } instanceof Array && function (d,
-            b) { d.__proto__ = b; }) ||
-                        function (d,
-            b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+            var extendStatics = function (d, b) {
+                extendStatics = Object.setPrototypeOf ||
+                    ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+                    function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
                 return extendStatics(d, b);
             };
             return function (d, b) {
@@ -130,25 +121,14 @@
             };
         })();
         var color = Color.parse;
-        var addEvent = U.addEvent,
-            erase = U.erase,
-            extend = U.extend,
-            Fx = U.Fx,
-            isNumber = U.isNumber,
-            merge = U.merge,
-            pick = U.pick,
-            splat = U.splat;
+        var addEvent = U.addEvent, erase = U.erase, extend = U.extend, Fx = U.Fx, isNumber = U.isNumber, merge = U.merge, pick = U.pick, splat = U.splat;
         /**
          * Color axis types
          *
          * @typedef {"linear"|"logarithmic"} Highcharts.ColorAxisTypeValue
          */
         ''; // detach doclet above
-        var Chart = H.Chart,
-            Series = H.Series,
-            colorPointMixin = H.colorPointMixin,
-            colorSeriesMixin = H.colorSeriesMixin,
-            noop = H.noop;
+        var Chart = H.Chart, Series = H.Series, colorPointMixin = H.colorPointMixin, colorSeriesMixin = H.colorSeriesMixin, noop = H.noop;
         extend(Series.prototype, colorSeriesMixin);
         extend(Point.prototype, colorPointMixin);
         Chart.prototype.collectionsWithUpdate.push('colorAxis');
@@ -168,7 +148,7 @@
          * The color axis options for initialization.
          */
         var ColorAxis = /** @class */ (function (_super) {
-                __extends(ColorAxis, _super);
+            __extends(ColorAxis, _super);
             /* *
              *
              *  Constructors
@@ -178,9 +158,7 @@
              * @private
              */
             function ColorAxis(chart, userOptions) {
-                var _this = _super.call(this,
-                    chart,
-                    userOptions) || this;
+                var _this = _super.call(this, chart, userOptions) || this;
                 _this.beforePadding = false; // Prevents unnecessary padding with `hc-more`
                 _this.chart = void 0;
                 _this.coll = 'colorAxis';
@@ -204,10 +182,9 @@
              * @private
              */
             ColorAxis.buildOptions = function (chart, options, userOptions) {
-                var legend = chart.options.legend || {},
-                    horiz = userOptions.layout ?
-                        userOptions.layout !== 'vertical' :
-                        legend.layout !== 'vertical';
+                var legend = chart.options.legend || {}, horiz = userOptions.layout ?
+                    userOptions.layout !== 'vertical' :
+                    legend.layout !== 'vertical';
                 return merge(options, {
                     side: horiz ? 2 : 1,
                     reversed: !horiz
@@ -238,9 +215,7 @@
             ColorAxis.prototype.init = function (chart, userOptions) {
                 var axis = this;
                 var options = ColorAxis.buildOptions(// Build the options
-                    chart,
-                    ColorAxis.defaultOptions,
-                    userOptions);
+                chart, ColorAxis.defaultOptions, userOptions);
                 axis.coll = 'colorAxis';
                 _super.prototype.init.call(this, chart, options);
                 // Base init() pushes it to the xAxis array, now pop it again
@@ -259,12 +234,7 @@
              */
             ColorAxis.prototype.initDataClasses = function (userOptions) {
                 var axis = this;
-                var chart = axis.chart,
-                    dataClasses,
-                    colorCounter = 0,
-                    colorCount = chart.options.chart.colorCount,
-                    options = axis.options,
-                    len = userOptions.dataClasses.length;
+                var chart = axis.chart, dataClasses, colorCounter = 0, colorCount = chart.options.chart.colorCount, options = axis.options, len = userOptions.dataClasses.length;
                 axis.dataClasses = dataClasses = [];
                 axis.legendItems = [];
                 userOptions.dataClasses.forEach(function (dataClass, i) {
@@ -343,10 +313,7 @@
                 var symbol = axis.legendSymbol;
                 var chart = axis.chart;
                 var legendOptions = chart.options.legend || {};
-                var x,
-                    y,
-                    width,
-                    height;
+                var x, y, width, height;
                 if (symbol) {
                     this.left = x = symbol.attr('x');
                     this.top = y = symbol.attr('y');
@@ -384,12 +351,7 @@
                 var axis = this;
                 var dataClasses = axis.dataClasses;
                 var stops = axis.stops;
-                var pos,
-                    from,
-                    to,
-                    color,
-                    dataClass,
-                    i;
+                var pos, from, to, color, dataClass, i;
                 if (dataClasses) {
                     i = dataClasses.length;
                     while (i--) {
@@ -458,19 +420,16 @@
                 var reversed = axis.reversed;
                 var one = reversed ? 1 : 0;
                 var zero = reversed ? 0 : 1;
-                var grad = horiz ? [one, 0,
-                    zero, 0] : [0,
-                    zero, 0,
-                    one]; // #3190
-                    axis.legendColor = {
-                        linearGradient: {
-                            x1: grad[0],
-                            y1: grad[1],
-                            x2: grad[2],
-                            y2: grad[3]
-                        },
-                        stops: axis.stops
-                    };
+                var grad = horiz ? [one, 0, zero, 0] : [0, zero, 0, one]; // #3190
+                axis.legendColor = {
+                    linearGradient: {
+                        x1: grad[0],
+                        y1: grad[1],
+                        x2: grad[2],
+                        y2: grad[3]
+                    },
+                    stops: axis.stops
+                };
             };
             /**
              * The color axis appears inside the legend and has its own legend symbol.
@@ -481,12 +440,9 @@
                 var padding = legend.padding;
                 var legendOptions = legend.options;
                 var horiz = axis.horiz;
-                var width = pick(legendOptions.symbolWidth,
-                    horiz ? ColorAxis.defaultLegendLength : 12);
-                var height = pick(legendOptions.symbolHeight,
-                    horiz ? 12 : ColorAxis.defaultLegendLength);
-                var labelPadding = pick(legendOptions.labelPadding,
-                    horiz ? 16 : 30);
+                var width = pick(legendOptions.symbolWidth, horiz ? ColorAxis.defaultLegendLength : 12);
+                var height = pick(legendOptions.symbolHeight, horiz ? 12 : ColorAxis.defaultLegendLength);
+                var labelPadding = pick(legendOptions.labelPadding, horiz ? 16 : 30);
                 var itemDistance = pick(legendOptions.itemDistance, 10);
                 this.setLegendColor();
                 // Create the gradient
@@ -517,15 +473,7 @@
             ColorAxis.prototype.getSeriesExtremes = function () {
                 var axis = this;
                 var series = axis.series;
-                var colorValArray,
-                    colorKey,
-                    colorValIndex,
-                    pointArrayMap,
-                    calculatedExtremes,
-                    cSeries,
-                    i = series.length,
-                    yData,
-                    j;
+                var colorValArray, colorKey, colorValIndex, pointArrayMap, calculatedExtremes, cSeries, i = series.length, yData, j;
                 this.dataMin = Infinity;
                 this.dataMax = -Infinity;
                 while (i--) { // x, y, value, other
@@ -558,8 +506,7 @@
                         cSeries.maxColorValue = cSeries[colorKey + 'Max'];
                     }
                     else {
-                        var cExtremes = Series.prototype.getExtremes.call(cSeries,
-                            colorValArray);
+                        var cExtremes = Series.prototype.getExtremes.call(cSeries, colorValArray);
                         cSeries.minColorValue = cExtremes.dataMin;
                         cSeries.maxColorValue = cExtremes.dataMax;
                     }
@@ -668,8 +615,7 @@
                 var axis = this;
                 var chart = axis.chart;
                 var legend = chart.legend;
-                var updatedOptions = ColorAxis.buildOptions(chart, {},
-                    newOptions);
+                var updatedOptions = ColorAxis.buildOptions(chart, {}, newOptions);
                 this.series.forEach(function (series) {
                     // Needed for Axis.update when choropleth colors change
                     series.isDirtyData = true;
@@ -732,9 +678,7 @@
                 var name;
                 if (!legendItems.length) {
                     axis.dataClasses.forEach(function (dataClass, i) {
-                        var vis = true,
-                            from = dataClass.from,
-                            to = dataClass.to;
+                        var vis = true, from = dataClass.from, to = dataClass.to;
                         var numberFormatter = chart.numberFormatter;
                         // Assemble the default name. This can be overridden
                         // by legend.options.labelFormatter
@@ -1231,8 +1175,7 @@
         });
         // Extend the chart getAxes method to also get the color axis
         addEvent(Chart, 'afterGetAxes', function () {
-            var chart = this,
-                options = chart.options;
+            var chart = this, options = chart.options;
             this.colorAxis = [];
             if (options.colorAxis) {
                 options.colorAxis = splat(options.colorAxis);
@@ -1255,10 +1198,7 @@
         // Add the color axis. This also removes the axis' own series to prevent
         // them from showing up individually.
         addEvent(Legend, 'afterGetAllItems', function (e) {
-            var colorAxisItems = [],
-                colorAxes = this.chart.colorAxis || [],
-                options,
-                i;
+            var colorAxisItems = [], colorAxes = this.chart.colorAxis || [], options, i;
             colorAxes.forEach(function (colorAxis) {
                 options = colorAxis.options;
                 if (options && options.showInLegend) {
@@ -1330,8 +1270,7 @@
          *
          * */
         var defined = U.defined;
-        var noop = H.noop,
-            seriesTypes = H.seriesTypes;
+        var noop = H.noop, seriesTypes = H.seriesTypes;
         /**
          * Mixin for maps and heatmaps
          *
@@ -1400,7 +1339,7 @@
         };
 
     });
-    _registerModule(_modules, 'parts-map/HeatmapSeries.js', [_modules['parts/Globals.js'], _modules['mixins/legend-symbol.js'], _modules['parts/Utilities.js']], function (H, LegendSymbolMixin, U) {
+    _registerModule(_modules, 'parts-map/HeatmapSeries.js', [_modules['parts/Globals.js'], _modules['mixins/legend-symbol.js'], _modules['parts/SVGRenderer.js'], _modules['parts/Utilities.js']], function (H, LegendSymbolMixin, SVGRenderer, U) {
         /* *
          *
          *  (c) 2010-2020 Torstein Honsi
@@ -1410,6 +1349,7 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
+        var clamp = U.clamp, extend = U.extend, fireEvent = U.fireEvent, isNumber = U.isNumber, merge = U.merge, pick = U.pick, seriesType = U.seriesType;
         /* *
          * @interface Highcharts.PointOptionsObject in parts/Point.ts
          */ /**
@@ -1422,19 +1362,8 @@
         * @name Highcharts.PointOptionsObject#value
         * @type {number|null|undefined}
         */
-        var clamp = U.clamp,
-            extend = U.extend,
-            fireEvent = U.fireEvent,
-            isNumber = U.isNumber,
-            merge = U.merge,
-            pick = U.pick,
-            seriesType = U.seriesType;
-        var colorMapPointMixin = H.colorMapPointMixin,
-            colorMapSeriesMixin = H.colorMapSeriesMixin,
-            noop = H.noop,
-            Series = H.Series,
-            seriesTypes = H.seriesTypes,
-            symbols = H.SVGRenderer.prototype.symbols;
+        ''; // detach doclets above
+        var colorMapPointMixin = H.colorMapPointMixin, colorMapSeriesMixin = H.colorMapSeriesMixin, noop = H.noop, Series = H.Series, seriesTypes = H.seriesTypes, symbols = SVGRenderer.prototype.symbols;
         /**
          * @private
          * @class
@@ -1739,8 +1668,7 @@
              * @return {void}
              */
             setClip: function (animation) {
-                var series = this,
-                    chart = series.chart;
+                var series = this, chart = series.chart;
                 Series.prototype.setClip.apply(series, arguments);
                 if (series.options.clip !== false || animation) {
                     series.markerGroup
@@ -1758,18 +1686,12 @@
                 var series = this, options = series.options, symbol = options.marker && options.marker.symbol || '', shape = symbols[symbol] ? symbol : 'rect', options = series.options, hasRegularShape = ['circle', 'square'].indexOf(shape) !== -1;
                 series.generatePoints();
                 series.points.forEach(function (point) {
-                    var pointAttr,
-                        sizeDiff,
-                        hasImage,
-                        cellAttr = point.getCellAttributes(),
-                        shapeArgs = {
-                            x: Math.min(cellAttr.x1,
-                        cellAttr.x2),
-                            y: Math.min(cellAttr.y1,
-                        cellAttr.y2),
-                            width: Math.max(Math.abs(cellAttr.x2 - cellAttr.x1), 0),
-                            height: Math.max(Math.abs(cellAttr.y2 - cellAttr.y1), 0)
-                        };
+                    var pointAttr, sizeDiff, hasImage, cellAttr = point.getCellAttributes(), shapeArgs = {
+                        x: Math.min(cellAttr.x1, cellAttr.x2),
+                        y: Math.min(cellAttr.y1, cellAttr.y2),
+                        width: Math.max(Math.abs(cellAttr.x2 - cellAttr.x1), 0),
+                        height: Math.max(Math.abs(cellAttr.y2 - cellAttr.y1), 0)
+                    };
                     hasImage = point.hasImage =
                         (point.marker && point.marker.symbol || symbol || '')
                             .indexOf('url') === 0;
@@ -1811,25 +1733,15 @@
              * @return {Highcharts.SVGAttributes}
              */
             pointAttribs: function (point, state) {
-                var series = this,
-                    attr = Series.prototype.pointAttribs
-                        .call(series,
-                    point,
-                    state),
-                    seriesOptions = series.options || {},
-                    plotOptions = series.chart.options.plotOptions || {},
-                    seriesPlotOptions = plotOptions.series || {},
-                    heatmapPlotOptions = plotOptions.heatmap || {},
-                    stateOptions,
-                    brightness, 
-                    // Get old properties in order to keep backward compatibility
-                    borderColor = seriesOptions.borderColor ||
-                        heatmapPlotOptions.borderColor ||
-                        seriesPlotOptions.borderColor,
-                    borderWidth = seriesOptions.borderWidth ||
-                        heatmapPlotOptions.borderWidth ||
-                        seriesPlotOptions.borderWidth ||
-                        attr['stroke-width'];
+                var series = this, attr = Series.prototype.pointAttribs
+                    .call(series, point, state), seriesOptions = series.options || {}, plotOptions = series.chart.options.plotOptions || {}, seriesPlotOptions = plotOptions.series || {}, heatmapPlotOptions = plotOptions.heatmap || {}, stateOptions, brightness, 
+                // Get old properties in order to keep backward compatibility
+                borderColor = seriesOptions.borderColor ||
+                    heatmapPlotOptions.borderColor ||
+                    seriesPlotOptions.borderColor, borderWidth = seriesOptions.borderWidth ||
+                    heatmapPlotOptions.borderWidth ||
+                    seriesPlotOptions.borderWidth ||
+                    attr['stroke-width'];
                 // Apply lineColor, or set it to default series color.
                 attr.stroke = ((point && point.marker && point.marker.lineColor) ||
                     (seriesOptions.marker && seriesOptions.marker.lineColor) ||
@@ -1857,13 +1769,7 @@
              * @return {Highcharts.SVGAttributes}
              */
             markerAttribs: function (point, state) {
-                var pointMarkerOptions = point.marker || {},
-                    seriesMarkerOptions = this.options.marker || {},
-                    seriesStateOptions,
-                    pointStateOptions,
-                    shapeArgs = point.shapeArgs || {},
-                    hasImage = point.hasImage,
-                    attribs = {};
+                var pointMarkerOptions = point.marker || {}, seriesMarkerOptions = this.options.marker || {}, seriesStateOptions, pointStateOptions, shapeArgs = point.shapeArgs || {}, hasImage = point.hasImage, attribs = {};
                 if (hasImage) {
                     return {
                         x: point.plotX,
@@ -1941,10 +1847,7 @@
             getExtremes: function () {
                 // Get the extremes from the value data
                 var _a = Series.prototype.getExtremes
-                        .call(this,
-                    this.valueData),
-                    dataMin = _a.dataMin,
-                    dataMax = _a.dataMax;
+                    .call(this, this.valueData), dataMin = _a.dataMin, dataMax = _a.dataMax;
                 if (isNumber(dataMin)) {
                     this.valueMin = dataMin;
                 }
@@ -1977,9 +1880,7 @@
              */
             applyOptions: function (options, x) {
                 var point = H.Point.prototype
-                        .applyOptions.call(this,
-                    options,
-                    x);
+                    .applyOptions.call(this, options, x);
                 point.formatPrefix =
                     point.isNull || point.value === null ?
                         'null' : 'point';
@@ -2023,51 +1924,22 @@
                 ];
             },
             getCellAttributes: function () {
-                var point = this,
-                    series = point.series,
-                    seriesOptions = series.options,
-                    xPad = (seriesOptions.colsize || 1) / 2,
-                    yPad = (seriesOptions.rowsize || 1) / 2,
-                    xAxis = series.xAxis,
-                    yAxis = series.yAxis,
-                    markerOptions = point.options.marker || series.options.marker,
-                    pointPlacement = series.pointPlacementToXValue(), // #7860
-                    pointPadding = pick(point.pointPadding,
-                    seriesOptions.pointPadding, 0),
-                    cellAttr = {
-                        x1: clamp(Math.round(xAxis.len -
-                            (xAxis.translate(point.x - xPad,
-                    false,
-                    true,
-                    false,
-                    true, -pointPlacement) || 0)), -xAxis.len, 2 * xAxis.len),
-                        x2: clamp(Math.round(xAxis.len -
-                            (xAxis.translate(point.x + xPad,
-                    false,
-                    true,
-                    false,
-                    true, -pointPlacement) || 0)), -xAxis.len, 2 * xAxis.len),
-                        y1: clamp(Math.round((yAxis.translate(point.y - yPad,
-                    false,
-                    true,
-                    false,
-                    true) || 0)), -yAxis.len, 2 * yAxis.len),
-                        y2: clamp(Math.round((yAxis.translate(point.y + yPad,
-                    false,
-                    true,
-                    false,
-                    true) || 0)), -yAxis.len, 2 * yAxis.len)
-                    };
+                var point = this, series = point.series, seriesOptions = series.options, xPad = (seriesOptions.colsize || 1) / 2, yPad = (seriesOptions.rowsize || 1) / 2, xAxis = series.xAxis, yAxis = series.yAxis, markerOptions = point.options.marker || series.options.marker, pointPlacement = series.pointPlacementToXValue(), // #7860
+                pointPadding = pick(point.pointPadding, seriesOptions.pointPadding, 0), cellAttr = {
+                    x1: clamp(Math.round(xAxis.len -
+                        (xAxis.translate(point.x - xPad, false, true, false, true, -pointPlacement) || 0)), -xAxis.len, 2 * xAxis.len),
+                    x2: clamp(Math.round(xAxis.len -
+                        (xAxis.translate(point.x + xPad, false, true, false, true, -pointPlacement) || 0)), -xAxis.len, 2 * xAxis.len),
+                    y1: clamp(Math.round((yAxis.translate(point.y - yPad, false, true, false, true) || 0)), -yAxis.len, 2 * yAxis.len),
+                    y2: clamp(Math.round((yAxis.translate(point.y + yPad, false, true, false, true) || 0)), -yAxis.len, 2 * yAxis.len)
+                };
                 // Handle marker's fixed width, and height values including border
                 // and pointPadding while calculating cell attributes.
                 [['width', 'x'], ['height', 'y']].forEach(function (dimension) {
-                    var prop = dimension[0],
-                        direction = dimension[1];
+                    var prop = dimension[0], direction = dimension[1];
                     var start = direction + '1', end = direction + '2';
-                    var side = Math.abs(cellAttr[start] - cellAttr[end]),
-                        borderWidth = markerOptions &&
-                            markerOptions.lineWidth || 0,
-                        plotPos = Math.abs(cellAttr[start] + cellAttr[end]) / 2;
+                    var side = Math.abs(cellAttr[start] - cellAttr[end]), borderWidth = markerOptions &&
+                        markerOptions.lineWidth || 0, plotPos = Math.abs(cellAttr[start] + cellAttr[end]) / 2;
                     if (markerOptions[prop] &&
                         markerOptions[prop] < side) {
                         cellAttr[start] = plotPos - (markerOptions[prop] / 2) -
